@@ -52,7 +52,7 @@ class mesh_maker:
             verts, faces, _, _ = measure.marching_cubes_lewiner(water.data)
             watermesh = trimesh.Trimesh(vertices = verts, faces = faces)    
             stl = trimesh.exchange.stl.export_stl_ascii(watermesh)
-            stlpath = os.path.join(self.out_path, ''.join(['water_ts_',str(ts),'.stl']))
+            stlpath = os.path.join(self.out_path, ''.join(['water_ts_',f'{ts:05}','.stl']))
             
             with open(stlpath, 'w+') as file: 
                  file.write(stl)     

@@ -20,4 +20,4 @@ required packages: xarray, scikit-image, trimesh, numpy
 	```bash
 	<path_to_binary>blender.exe blend-file.blend --background --python animationscript.py
 	```
-1. (optional) adjust frame and sampling rate
+1. (optional) adjust frame and sampling rate, better option: create separate avi-files, merge and convert to mkv, e.g. combining ImageJ and ffmpeg

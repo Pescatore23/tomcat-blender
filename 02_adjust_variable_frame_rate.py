@@ -14,7 +14,7 @@ import shutil
 
 nc_path = r"Z:\Robert_TOMCAT_3_combined_archives\unmasked\dyn_data_T3_025_3_III.nc"
 
-timestep_folder = r"Z:\anim_test_full_png"
+timestep_folder = r"Z:\anim_test_full_png2"
 time_folder = r"R:\Scratch\305\_Robert\time_test"
 
 if not os.path.exists(time_folder):
@@ -26,30 +26,42 @@ pfx = len(fileprefix)
 filesuffix = '.png'
 sfx = len(filesuffix)
 
-time_array = np.arange(0,1600,1) #s
-
 dyn_data = xr.open_dataset(nc_path)
 exp_time = dyn_data['time'].data
 dyn_data.close()
 
-for t in time_array:
-    ts = np.argmax(exp_time>t)-1
+
+# temporary solution: manually define time steps and framerate
+
+def move_file(ts, folder):
+    filename = ''.join([fileprefix,str(ts), filesuffix])
+    filepath = os.path.join(timestep_folder, filename)
+    if os.path.exists(filepath):
+        shutil.move(filepath, os.path.join(folder,filename))
+
+# part1 6s per scan
+part1_steps = np.arange(101)
+
+part1_folder = os.path.join(timestep_folder, 'part1')
+if not os.path.exists(part1_folder):
+    os.mkdir(part1_folder)
+
+for ts in part1_steps:
+    move_file(ts, part1_folder)
     
-    step_file = ''.join([fileprefix,str(ts),filesuffix])
-    prev_step_file = ''.join([fileprefix,str(ts-1),filesuffix])
-    
-    step_path = os.path.join(timestep_folder, step_file)
-    prev_path = os.path.join(timestep_folder, prev_step_file)
-    
-    time_file = ''.join(['{:.2f}'.format(t),'_s.png'])
-    time_path = os.path.join(time_folder, time_file)
-    
-    if os.path.exists(step_path):
-        shutil.copyfile(step_path, time_path )
-    
-    # TODO: allow to go back more than one step ; probably unnecessary, noise should cause all time steps to render
-    elif os.path.exists(prev_path):
-        shutil.copyfile(prev_path, time_path )
-    
-    
+# part2 1s per scan
+part2_steps = np.arange(101,220)
+part2_folder = os.path.join(timestep_folder, 'part2')
+if not os.path.exists(part2_folder):
+    os.mkdir(part2_folder)
+for ts in part2_steps:
+    move_file(ts, part2_folder)
+
+# part3 7s per scan
+part3_steps = np.arange(220, len(exp_time))
+part3_folder = os.path.join(timestep_folder, 'part3')
+if not os.path.exists(part3_folder):
+    os.mkdir(part3_folder)
+for ts in part3_steps:
+    move_file(ts, part3_folder)
     
