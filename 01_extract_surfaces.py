@@ -10,10 +10,16 @@ import os
 from skimage import measure
 import trimesh
 import numpy as np
+from joblib import delayed, Parallel
+import socket
+host = socket.gethostname()
 
 
 # TODO: add GPU support once cucim/cupy allow GPU marching cubes
 # TODO: already allow cupy for matrix operations and loading
+temp_folder = None
+if host == 'DDM06609':
+    temp_folder = r"Z:\users\firo\joblib_tmp"
 
 
 class mesh_maker:
@@ -24,6 +30,8 @@ class mesh_maker:
                  timesteps = None, #'all', or array
                  z_boundaries = (0,-1),
                  use_gpu = False, #stub to call either cupy/cucim or not,
+                 cpu_parallel = False,
+                 njobs = 8,
                  ):
         self.nc_path = nc_path
         self.out_path = out_path
@@ -33,6 +41,8 @@ class mesh_maker:
         self.ref_ts = ref_timestep
         self.timesteps = timesteps
         self.use_gpu = use_gpu
+        self.parallel = cpu_parallel
+        self.njobs = njobs
     
     def load_data(self):
         self.dyn_data = xr.open_dataset(self.nc_path)
@@ -71,9 +81,13 @@ class mesh_maker:
                     steps = np.arange(len(self.dyn_data['time']))
                 else:
                     steps = self.timesteps
-                for ts in steps:
-                    if not ts == self.ref_ts:
-                        self.time_step_stl(ts)
+                
+                if self.parallel:
+                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_step_stl)(ts) for ts in steps)
+                else:
+                    for ts in steps:
+                        if not ts == self.ref_ts:
+                            self.time_step_stl(ts)
         except Exception as e:
             print(e)
             self.dyn_data.close()
