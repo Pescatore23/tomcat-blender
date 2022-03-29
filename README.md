@@ -13,11 +13,11 @@ required packages: xarray, scikit-image, trimesh, numpy
 
 1. Choose appropitate time step to set up scene and everything (e.g. cycles-render) in blender, do a test render, save the blend-file
 
-1. Run the animation script from cammand line
+1. Run the animation script from command line
 
 	Windows
 
 	```bash
-	<path_to_binary>blender.exe blend-file.blend --background --python animationscript.py
+	<path_to_binary>blender.exe blend-file.blend --background --python testanimscriptfull.py
 	```
 1. (optional) adjust frame and sampling rate, better option: create separate avi-files, merge and convert to mkv, e.g. combining ImageJ and ffmpeg
