@@ -65,8 +65,23 @@ class mesh_maker:
             stlpath = os.path.join(self.out_path, ''.join(['water_ts_',f'{ts:05}','.stl']))
             
             with open(stlpath, 'w+') as file: 
-                 file.write(stl)     
+                 file.write(stl) 
+                 
+    def time_4D_stl(self, ts, phase=1, phasename = 'phase_1'):
         
+        im = self.dyn_data['segmented'].sel(time=ts)==phase
+        
+        if np.any(im):
+            im[:,:,:2] = 0
+            im[:,:,-3:] = 0
+            verts, faces, _, _ = measure.marching_cubes_lewiner(im.data)
+            mesh = trimesh.Trimesh(vertices = verts, faces = faces)
+            stl = trimesh.exchange.stl.export_stl_ascii(mesh)
+            stlpath = os.path.join(self.out_path, ''.join([phasename, f'{ts:05}','.stl']))
+            with open(stlpath, 'w+') as file: 
+                 file.write(stl)            
+            
+            
     def run(self):
         # laod the data
         self.load_data()
@@ -84,6 +99,32 @@ class mesh_maker:
                 
                 if self.parallel:
                     Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_step_stl)(ts) for ts in steps)
+                else:
+                    for ts in steps:
+                        if not ts == self.ref_ts:
+                            self.time_step_stl(ts)
+        except Exception as e:
+            print(e)
+            self.dyn_data.close()
+        self.dyn_data.close()
+        
+    def run2(self, phase, name):
+        # laod the data
+        self.load_data()
+       # TODO:close ncfile if error
+        # make reference time step stl
+        try:
+            self.time_4D_stl(self.ref_ts, phase, name)
+            
+            # make all the other stls if called
+            if self.timesteps is not None:
+                if self.timesteps.any() == 'all':
+                    steps = np.arange(len(self.dyn_data['time']))
+                else:
+                    steps = self.timesteps
+                
+                if self.parallel:
+                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name) for ts in steps)
                 else:
                     for ts in steps:
                         if not ts == self.ref_ts:
