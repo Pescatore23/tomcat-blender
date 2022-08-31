@@ -60,7 +60,7 @@ class mesh_maker:
         if np.any(water):
             water[:,:,:2] = 0
             water[:,:,-3:] = 0
-            verts, faces, _, _ = measure.marching_cubes_lewiner(water.data)
+            verts, faces, _, _ = measure.marching_cubes(water.data) #_lewiner
             watermesh = trimesh.Trimesh(vertices = verts, faces = faces)    
             stl = trimesh.exchange.stl.export_stl_ascii(watermesh)
             stlpath = os.path.join(self.out_path, ''.join(['water_ts_',f'{ts:05}','.stl']))
@@ -75,7 +75,7 @@ class mesh_maker:
         if np.any(im):
             im[:,:,:2] = 0
             im[:,:,-3:] = 0
-            verts, faces, _, _ = measure.marching_cubes_lewiner(im.data)
+            verts, faces, _, _ = measure.marching_cubes(im.data) #_lewiner
             mesh = trimesh.Trimesh(vertices = verts, faces = faces)
             stl = trimesh.exchange.stl.export_stl_ascii(mesh)
             stlpath = os.path.join(self.out_path, ''.join([phasename, f'{ts:05}','.stl']))
