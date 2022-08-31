@@ -46,7 +46,8 @@ class mesh_maker:
     
     def load_data(self):
         self.dyn_data = xr.open_dataset(self.nc_path)
-        self.watermask = (self.dyn_data['transition_matrix']>0).data[:,:,self.zbot:self.ztop]
+        if 'transition_matrix' in list(self.dyn_data.keys()):
+            self.watermask = (self.dyn_data['transition_matrix']>0).data[:,:,self.zbot:self.ztop]
         if not os.path.exists(self.out_path):
             os.mkdir(self.out_path)
 
