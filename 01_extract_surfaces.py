@@ -129,7 +129,7 @@ class mesh_maker:
                 else:
                     for ts in steps:
                         if not ts == self.ref_ts:
-                            self.time_step_stl(ts)
+                            self.time_4D_stl(ts)
         except Exception as e:
             print(e)
             self.dyn_data.close()
