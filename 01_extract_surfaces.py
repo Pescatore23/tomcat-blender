@@ -93,7 +93,7 @@ class mesh_maker:
             
             # make all the other stls if called
             if self.timesteps is not None:
-                if self.timesteps.any() == 'all':
+                if self.timesteps == 'all':
                     steps = np.arange(len(self.dyn_data['time']))
                 else:
                     steps = self.timesteps
@@ -119,7 +119,7 @@ class mesh_maker:
             
             # make all the other stls if called
             if self.timesteps is not None:
-                if self.timesteps.any() == 'all':
+                if self.timesteps == 'all':
                     steps = np.arange(len(self.dyn_data['time']))
                 else:
                     steps = self.timesteps
