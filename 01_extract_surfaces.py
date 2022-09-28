@@ -73,9 +73,8 @@ class mesh_maker:
         
         im = self.dyn_data['segmented'].sel(time=ts)==phase
         
-        if clean: im = ndimage.binary_opening(im)
-        
         if np.any(im):
+            if clean: im = ndimage.binary_opening(im)
             im[:,:,:2] = 0
             im[:,:,-3:] = 0
             verts, faces, _, _ = measure.marching_cubes(im.data) #_lewiner
@@ -132,7 +131,7 @@ class mesh_maker:
                 else:
                     for ts in steps:
                         if not ts == self.ref_ts:
-                            self.time_4D_stl(ts)
+                            self.time_4D_stl(ts, phase, name, clean)
         except Exception as e:
             print(e)
             self.dyn_data.close()
