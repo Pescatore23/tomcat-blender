@@ -71,7 +71,7 @@ class mesh_maker:
                  
     def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False):
         
-        im = self.dyn_data['segmented'].sel(time=ts)==phase
+        im = self.dyn_data['segmented'].sel(time=ts).data==phase
         
         if np.any(im):
             if clean: im = ndimage.binary_opening(im)
@@ -117,7 +117,7 @@ class mesh_maker:
        # TODO:close ncfile if error
         # make reference time step stl
         try:
-            self.time_4D_stl(self.ref_ts, phase, name)
+            self.time_4D_stl(self.ref_ts, phase, name, clean)
             
             # make all the other stls if called
             if self.timesteps is not None:
