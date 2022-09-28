@@ -12,6 +12,7 @@ import trimesh
 import numpy as np
 from joblib import delayed, Parallel
 import socket
+from scipy import ndimage
 host = socket.gethostname()
 
 
@@ -68,9 +69,11 @@ class mesh_maker:
             with open(stlpath, 'w+') as file: 
                  file.write(stl) 
                  
-    def time_4D_stl(self, ts, phase=1, phasename = 'phase_1'):
+    def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False):
         
         im = self.dyn_data['segmented'].sel(time=ts)==phase
+        
+        if clean: im = ndimage.binary_opening(im)
         
         if np.any(im):
             im[:,:,:2] = 0
@@ -109,7 +112,7 @@ class mesh_maker:
             self.dyn_data.close()
         self.dyn_data.close()
         
-    def run2(self, phase, name):
+    def run2(self, phase, name, clean):
         # laod the data
         self.load_data()
        # TODO:close ncfile if error
@@ -125,7 +128,7 @@ class mesh_maker:
                     steps = self.timesteps
                 
                 if self.parallel:
-                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name) for ts in steps)
+                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name, clean) for ts in steps)
                 else:
                     for ts in steps:
                         if not ts == self.ref_ts:
