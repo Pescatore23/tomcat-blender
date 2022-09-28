@@ -71,13 +71,14 @@ class mesh_maker:
                  
     def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False):
         
-        im = self.dyn_data['segmented'].sel(time=ts).data==phase
+        im = self.dyn_data['segmented'].sel(time=ts)==phase
         
         if np.any(im):
+            im = im.data
             if clean: im = ndimage.binary_opening(im)
             im[:,:,:2] = 0
             im[:,:,-3:] = 0
-            verts, faces, _, _ = measure.marching_cubes(im.data) #_lewiner
+            verts, faces, _, _ = measure.marching_cubes(im) #_lewiner
             mesh = trimesh.Trimesh(vertices = verts, faces = faces)
             stl = trimesh.exchange.stl.export_stl_ascii(mesh)
             stlpath = os.path.join(self.out_path, ''.join([phasename, f'{ts:05}','.stl']))
