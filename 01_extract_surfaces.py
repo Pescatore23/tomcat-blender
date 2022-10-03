@@ -69,13 +69,13 @@ class mesh_maker:
             with open(stlpath, 'w+') as file: 
                  file.write(stl) 
                  
-    def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False):
+    def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False, fp = None):
         
         im = self.dyn_data['segmented'].sel(time=ts)==phase
         
         if np.any(im):
             im = im.data
-            if clean: im = ndimage.binary_opening(im)
+            if clean: im = ndimage.binary_opening(im, structure=fp)
             im[:,:,:2] = 0
             im[:,:,-3:] = 0
             verts, faces, _, _ = measure.marching_cubes(im) #_lewiner
@@ -112,7 +112,7 @@ class mesh_maker:
             self.dyn_data.close()
         self.dyn_data.close()
         
-    def run2(self, phase, name, clean):
+    def run2(self, phase, name, clean, fp=None):
         # laod the data
         self.load_data()
        # TODO:close ncfile if error
@@ -128,7 +128,7 @@ class mesh_maker:
                     steps = self.timesteps
                 
                 if self.parallel:
-                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name, clean) for ts in steps)
+                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name, clean, fp) for ts in steps)
                 else:
                     for ts in steps:
                         if not ts == self.ref_ts:
