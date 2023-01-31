@@ -4,7 +4,7 @@ import os
 baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack/" #for stl
 outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_png/" #for png
 
-material = 'crack'
+material = 'Crack'
 
 if not os.path.exists(outfolder):
     os.mkdir(outfolder)
