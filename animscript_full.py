@@ -1,8 +1,8 @@
 import bpy
 import os
 
-baseFolder=r"A:\anim_test_full" #for stl
-outfolder=r"A:\anim_test_full_png2" #for png
+baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack/" #for stl
+outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_png/" #for png
 
 material = 'crack'
 
