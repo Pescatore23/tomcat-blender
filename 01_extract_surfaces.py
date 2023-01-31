@@ -8,6 +8,7 @@ Created on Fri Mar 25 08:39:28 2022
 import xarray as xr
 import os
 from skimage import measure
+from skimage.morphology import ball
 import trimesh
 import numpy as np
 from joblib import delayed, Parallel
@@ -112,7 +113,7 @@ class mesh_maker:
             self.dyn_data.close()
         self.dyn_data.close()
         
-    def run2(self, phase, name, clean, fp=None):
+    def run2(self, phase, name, clean, fp=ball(1)):
         # laod the data
         self.load_data()
        # TODO:close ncfile if error
