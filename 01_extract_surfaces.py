@@ -78,7 +78,7 @@ class mesh_maker:
         if np.any(im):
             im = im.data
             if clean: im = ndimage.binary_opening(im, structure=fp)
-            if remove_small: im = morphology.remove_small(im, min_size=minsize)
+            if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
             im[:,:,:2] = 0
             im[:,:,-3:] = 0
             verts, faces, _, _ = measure.marching_cubes(im) #_lewiner
