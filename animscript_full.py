@@ -1,8 +1,8 @@
 import bpy
 import os
 
-baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack/" #for stl
-outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_png/" #for png
+baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_smaller_200_removed/" #for stl
+outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_smalelr_200_removed_png/" #for png
 
 material = 'Crack'
 

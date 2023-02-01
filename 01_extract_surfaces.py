@@ -131,7 +131,7 @@ class mesh_maker:
                     steps = self.timesteps
                 
                 if self.parallel:
-                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name, clean,remove_small, fp) for ts in steps)
+                    Parallel(n_jobs=self.njobs, temp_folder=temp_folder)(delayed(self.time_4D_stl)(ts, phase, name, clean,remove_small, fp, minsize) for ts in steps)
                 else:
                     for ts in steps:
                         if not ts == self.ref_ts:
