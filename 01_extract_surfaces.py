@@ -34,7 +34,7 @@ class mesh_maker:
                  z_boundaries = (0,-1),
                  use_gpu = False, #stub to call either cupy/cucim or not,
                  cpu_parallel = True,
-                 njobs = 8,
+                 njobs = 16,
                  ):
         self.nc_path = nc_path
         self.out_path = out_path
