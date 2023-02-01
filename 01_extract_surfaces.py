@@ -115,7 +115,7 @@ class mesh_maker:
             self.dyn_data.close()
         self.dyn_data.close()
         
-    def run2(self, phase, name, clean=False, remove_small=False, fp=ball(1)):
+    def run2(self, phase, name, clean=False, remove_small=False, fp=ball(1), minsize=20):
         # laod the data
         self.load_data()
        # TODO:close ncfile if error
