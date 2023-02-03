@@ -1,10 +1,11 @@
 import bpy
 import os
 
-baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_smaller_200_removed/" #for stl
-outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_anode_camera_png/" #for png
+baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/membrane_smaller_200_removed/" #for stl
+outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/membrane_cathode_camera_png/" #for png
 
-material = 'Crack'
+material = 'membrane' #'Crack'
+
 
 if not os.path.exists(outfolder):
     os.mkdir(outfolder)
