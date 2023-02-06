@@ -74,6 +74,7 @@ class mesh_maker:
                  use_gpu = False, #stub to call either cupy/cucim or not,
                  cpu_parallel = True,
                  njobs = 16,
+                 GPU = True
                  ):
         self.nc_path = nc_path
         self.out_path = out_path
@@ -90,6 +91,7 @@ class mesh_maker:
         self.use_gpu = use_gpu
         self.parallel = cpu_parallel
         self.njobs = njobs
+        self.GPU = GPU
     
     def load_data(self):
         self.dyn_data = xr.open_dataset(self.nc_path)
@@ -117,10 +119,10 @@ class mesh_maker:
                  
     def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False, remove_small= False, fp_radius = 1, minsize=20):
         
-        im = self.dyn_data['segmented'].sel(time=ts)==phase
+        im = self.dyn_data['segmented'].sel(time=ts)[self.xbot:self.xtop,self.ybot:self.ytop,self.zbot:self.ztop]==phase
         
         if np.any(im):
-            im = im[self.xbot:self.xtop,self.ybot:self.ytop,self.zbot:self.ztop].data
+            im = im.data
             # TODO: use GPU
             # if clean: im = ndimage.binary_opening(im, structure=fp)
             # if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
@@ -133,7 +135,7 @@ class mesh_maker:
             im[:,:,:2] = 0
             im[:,:,-3:] = 0
             
-            im = clean_binary_image(im, clean, remove_small,  minsize, fp_radius = 1, i=ts)
+            im = clean_binary_image(im, clean, remove_small,  minsize, fp_radius, i=ts, GPU = self.GPU)
                         
             verts, faces, _, _ = measure.marching_cubes(im) #_lewiner
             mesh = trimesh.Trimesh(vertices = verts, faces = faces)
