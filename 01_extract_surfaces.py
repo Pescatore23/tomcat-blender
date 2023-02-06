@@ -81,8 +81,8 @@ class mesh_maker:
             
         self.xbot = x_boundaries[0]
         self.xtop = x_boundaries[1]
-        self.ybot = z_boundaries[0]
-        self.ytop = z_boundaries[1]
+        self.ybot = y_boundaries[0]
+        self.ytop = y_boundaries[1]
         self.zbot = z_boundaries[0]
         self.ztop = z_boundaries[1]
         
