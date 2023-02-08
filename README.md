@@ -3,10 +3,12 @@
 ![lstopo](img/tomcat_blender_logo_sketch.png)
 
 Scripts to automate TOMCAT data visualization in blender with python.
-TODO: make cool logo from current sketch
-TODO: build into python module with classes
-TODO: maybe wrap system call of blender
-TODO: add cupy/cucim support
+TODO:
+- [ ] make cool logo from current sketch
+- [ ] build into python module with classes
+- [ ] maybe wrap system call of blender
+- [x] add cupy/cucim support (partly done)
+- [ ] use openvdb for volume import in blender
 
 required packages: xarray, scikit-image, trimesh, numpy
 
