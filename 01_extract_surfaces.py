@@ -66,7 +66,7 @@ class mesh_maker:
     def __init__(self,
                  nc_path = None,
                  out_path = None,
-                 ref_timestep = 50,
+                 ref_timestep = 0,
                  timesteps = None, #'all', or array
                  x_boundaries = (0,-1),
                  y_boundaries = (0,-1),
