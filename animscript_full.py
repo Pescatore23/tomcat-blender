@@ -45,6 +45,9 @@ def load_and_render_stl(filename, filename2, baseFolder=baseFolder, mat=mat, out
 filenames = os.listdir(baseFolder)
 filenames2 = os.listdir(baseFolder2)
 
+filenames.sort()
+filenames2.sort()
+
 for (filename, filename2) in zip(filenames,filenames2):
 	if filename[-3:]=='stl':
 		load_and_render_stl(filename, filename2)
