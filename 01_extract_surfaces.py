@@ -119,7 +119,7 @@ class mesh_maker:
                  
     def time_4D_stl(self, ts, phase=1, phasename = 'phase_1', clean=False, remove_small= False, fp_radius = 1, minsize=20):
         
-        im = self.dyn_data['segmented'].sel(time=ts)[self.xbot:self.xtop,self.ybot:self.ytop,self.zbot:self.ztop]==phase
+        # im = self.dyn_data['segmented'].sel(time=ts)[self.xbot:self.xtop,self.ybot:self.ytop,self.zbot:self.ztop]==phase
         im = self.dyn_data['segmented'].sel(timestep=ts)[self.xbot:self.xtop,self.ybot:self.ytop,self.zbot:self.ztop]==phase
         
         if np.any(im):
