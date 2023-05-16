@@ -200,8 +200,11 @@ class mesh_maker:
         
                     
     
-
-        
+ncpath = '/das/home/fische_r/DASCOELY/processing/04_membrane_ML/3II/3IImembrane_segmentation.nc'
+outpath = '/das/home/fische_r/DASCOELY/processing/04_membrane_ML/3II/crack'
+MM = mesh_maker(nc_path=ncpath, out_path=outpath)
+MM.load_data()
+MM.run2(2, 'crack', clean=True, remove_small=True)
 
             
         
