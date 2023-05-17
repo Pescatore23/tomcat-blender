@@ -22,8 +22,7 @@ bpy.ops.object.delete(confirm=False)
 mat = bpy.data.materials[material]
 
 def load_and_render_stl(filename, baseFolder=baseFolder, mat=mat, outfolder=outfolder):
-	name = filename[:-4]
-	
+    name = filename[:-4]
     outfile = os.path.join(outfolder, ''.join([name,'.png']))
     if not os.path.exists(outfile):
 
