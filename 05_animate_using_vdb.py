@@ -50,5 +50,5 @@ def load_and_render_stl(filename, baseFolder=baseFolder, mat=mat, outfolder=outf
 filenames = os.listdir(baseFolder)
 
 for filename in filenames:
-	if filename[-3:]=='stl':
+	if filename[-3:]=='vdb':
 		load_and_render_stl(filename)
