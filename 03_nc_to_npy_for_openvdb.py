@@ -90,11 +90,11 @@ class volume_maker:
             timesteps = imdata.timestep.data
             length = len(timesteps)
              
-            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]), timesteps[i], i) for i in range(length))
+            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]).data, timesteps[i], i) for i in range(length))
             
         else:
             print('processing time step ',str(self.ts))
-            self.xarray_to_npy(imdata.sel(timestep=self.ts), self.ts)
+            self.xarray_to_npy(imdata.sel(timestep=self.ts).data, self.ts)
 
 if __name__ == '__main__':
     ### Parse arguments

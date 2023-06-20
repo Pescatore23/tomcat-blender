@@ -17,17 +17,26 @@ import pyopenvdb as openvdb
 toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_npy'
 topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_vdb'
 
+if not os.path.exists(topoutpath):
+    os.mkdir(topoutpath)
 
-x1, x2 = (0,-1)
-y1, y2  = (0,-1)
-z1, z2 = (0,-1)
+
+x1 = 0
+x2 = -1
+y1 = 0
+y2 = -1
+z1 = 0
+z2 = -1
 ts = -1
 # ts = 40
 
 #modified crops, comment out
-x1, x2 = (10,-10)
-y1, y1  = (10,-10)
-z1, z2 = (10,-10)
+x1 = 10
+x2 = -10
+y1 = 10
+y2 = -10
+z1 = 10
+z2 = -10
 
 def check_npy_folder(toppath):
     files = []
