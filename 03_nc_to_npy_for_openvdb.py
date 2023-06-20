@@ -29,8 +29,6 @@ except:
     GPU_avail = False
 
 # default parameters
-minsize = 200
-footprint = 1
 
 # TODO: add GPU support once cucim/cupy allow GPU marching cubes
 # TODO: already allow cupy for matrix operations and loading, image cleaning already possible with GPU
@@ -104,9 +102,9 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_path', type = str, default = '', help = 'path to folder that will contain the .npy files')
     parser.add_argument('-i', '--input_path', type=str, default='', help = 'path to the .nc-file containing the segmented data')
     parser.add_argument('-cl', '--clean_image', type = bool, default = True, help = 'wheter to remove spurious pixel by binaray opening')
-    parser.add_argument('-fp', '--footprint', type = int, default = footprint, help = 'radius of the sphere stencel used for the binary opening')
+    parser.add_argument('-fp', '--footprint', type = int, default = 1, help = 'radius of the sphere stencel used for the binary opening')
     parser.add_argument('-rs', '--remove_small', type = bool, default=True, help = 'wheter to remove objects smaller than minsize')
-    parser.add_argument('-ms', '--minsize', type = int, default=200, help = 'minimum size of connected objects to keep')
+    parser.add_argument('-ms', '--minsize', type = int, default=20, help = 'minimum size of connected objects to keep')
     parser.add_argument('-ts', '--time_step', type = int, default=0, help = 'time step that is processed, -1 for all')
     parser.add_argument('-sn', '--segmented_name', type = str, default = 'segmented', help = 'name of the data array in the .nc')
     parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all except 0 (not yet implemented)')
