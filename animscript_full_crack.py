@@ -2,7 +2,7 @@ import bpy
 import os
 
 baseFolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack/" #for stl
-outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_anode_camera_png/" #for png
+outfolder="/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_cathode_camera_png/" #for png
 
 material = 'crack' #'Crack'
 
