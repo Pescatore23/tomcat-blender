@@ -55,7 +55,7 @@ class volume_maker:
         
         self.topoutfolder = args.output_path
         self.array_name = args.segmented_name
-        self.phase = args.ph
+        self.ph = args.phase
         
     
         
@@ -86,9 +86,9 @@ class volume_maker:
         np.save(outpath, im)
         
     def nc_to_set_of_npy(self):
+        imdata = self.data[self.array_name]
         if self.ts<0:
             print('processing all time steps')
-            imdata = self.data[self.array_name]
             timesteps = imdata.timestep.data
             length = len(timesteps)
              
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     
     #create outfolder if necessary
     if not os.path.exists(VM.topoutfolder):
-        os.makedir(VM.topoutfolder)
+        os.mkdir(VM.topoutfolder)
 
     # process the data with the given parameters
     VM.nc_to_set_of_npy()    
