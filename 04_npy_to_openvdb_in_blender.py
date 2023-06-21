@@ -21,22 +21,22 @@ if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
 
 
-x1 = 0
-x2 = -1
-y1 = 0
-y2 = -1
-z1 = 0
-z2 = -1
+#x1 = 0
+#x2 = -1
+#y1 = 0
+#y2 = -1
+#z1 = 0
+#z2 = -1
 ts = -1
-# ts = 40
+#ts = 40
 
 #modified crops, comment out
-x1 = 10
-x2 = -10
-y1 = 10
-y2 = -10
-z1 = 10
-z2 = -10
+x1 = 20
+x2 = -20
+y1 = 20
+y2 = -20
+z1 = 250
+z2 = 1600
 
 def check_npy_folder(toppath):
     files = []
@@ -47,12 +47,12 @@ def check_npy_folder(toppath):
 
 def convert_npy_to_vdb(file, toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     im = np.load(os.path.join(toppath,file))
-    im = im[x1:x2,y1:y2,z1:z2]
-    im = im*1.0
+    imc = im[x1:x2,y1:y2,z1:z2]
+    # im = im*1.0
     
     grid = openvdb.FloatGrid()
-    grid.copyFromArray(im.astype(float))
-    grid.gridClass = openvdb.GridClass.STAGGERED
+    grid.copyFromArray(imc.astype(float))
+    grid.gridClass = openvdb.GridClass.FOG_VOLUME
     grid.name = 'density'
     
     openvdb.write(os.path.join(topoutpath, file[:-3]+'vdb'), grid)
