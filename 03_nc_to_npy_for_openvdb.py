@@ -57,7 +57,7 @@ class volume_maker:
         
     
         
-    def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 200, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
+    def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 20, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
         if clean or remove_small:
             if GPU and GPU_avail:
                 gpu_id = i%num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
