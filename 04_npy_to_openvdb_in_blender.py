@@ -14,8 +14,8 @@ import numpy as np
 import pyopenvdb as openvdb
 
 
-toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_npy'
-topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_vdb'
+toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5/crack_npy'
+topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5/crack_vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
@@ -35,8 +35,8 @@ x1 = 20
 x2 = -20
 y1 = 20
 y2 = -20
-z1 = 250
-z2 = 1600
+z1 = 20
+z2 = -20
 
 def check_npy_folder(toppath):
     files = []
