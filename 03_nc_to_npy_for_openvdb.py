@@ -77,8 +77,10 @@ class volume_maker:
         return im
     
     def xarray_to_npy(self, im, ts, i=0):
-        im = im == self.ph
-        im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
+        
+        if not self.ph<0:
+            im = im == self.ph
+            im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
         
         outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         np.save(outpath, im)
@@ -107,7 +109,7 @@ if __name__ == '__main__':
     parser.add_argument('-ms', '--minsize', type = int, default=20, help = 'minimum size of connected objects to keep')
     parser.add_argument('-ts', '--time_step', type = int, default=0, help = 'time step that is processed, -1 for all')
     parser.add_argument('-sn', '--segmented_name', type = str, default = 'segmented', help = 'name of the data array in the .nc')
-    parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all except 0 (not yet implemented)')
+    parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all')
     
     args = parser.parse_args()
     
