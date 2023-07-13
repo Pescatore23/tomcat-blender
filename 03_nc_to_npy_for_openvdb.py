@@ -54,9 +54,9 @@ class volume_maker:
         self.topoutfolder = args.output_path
         self.array_name = args.segmented_name
         self.ph = args.phase
-        self.mask = args.mask
-        
-    
+        self.mask = args.masks
+	self.mask_name = args.mask_name
+    	
         
     def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 20, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
         if clean or remove_small:
