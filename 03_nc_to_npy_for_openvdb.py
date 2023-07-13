@@ -54,7 +54,7 @@ class volume_maker:
         self.topoutfolder = args.output_path
         self.array_name = args.segmented_name
         self.ph = args.phase
-        self.mask = args.masks
+        self.mask = args.mask
         self.mask_name = args.mask_name
     	
         
@@ -81,6 +81,8 @@ class volume_maker:
         
         if self.mask:
             #  TODO: check if mask is int-binary 0-1 and adjust if necessary
+            a,b,c,d,e,f = self.data.attrs['cropping of seg data']
+            im = im[a:b,c:d,e:f]
             mask = self.data[self.mask_name].sel(timestep = ts).data
             im = im*mask
         
