@@ -14,9 +14,9 @@ import numpy as np
 import pyopenvdb as openvdb
 
 
-toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/membrane_npy'
-toppath2 = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/crack_npy'
-topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/3II/combined_vdb'
+toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5/membrane_npy'
+toppath2 = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5/crack_npy'
+topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5/combined_vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
@@ -47,14 +47,14 @@ def check_npy_folder(toppath):
     return files
 
 def convert_npy_to_vdb(file,file2, toppath,toppath2, topoutpath, x1,x2,y1,y2,z1,z2):
-    im = np.load(os.path.join(toppath,file2))
+    im = np.load(os.path.join(toppath,file))
     imc = im[x1:x2,y1:y2,z1:z2]
     # im = im*1.0
     
-    im2 = np.load(os.path.join(toppath2,file))
+    im2 = np.load(os.path.join(toppath2,file2))
     imc2 = im2[x1:x2,y1:y2,z1:z2]
     
-    imc = imc*1.0 + imc*2.0
+    imc = imc*1.0 + imc2*2.0
     imc[imc>2] = 2
     
     grid = openvdb.FloatGrid()
