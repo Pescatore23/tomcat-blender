@@ -54,6 +54,7 @@ class volume_maker:
         self.topoutfolder = args.output_path
         self.array_name = args.segmented_name
         self.ph = args.phase
+        self.mask = args.mask
         
     
         
@@ -78,15 +79,32 @@ class volume_maker:
     
     def xarray_to_npy(self, im, ts, i=0):
         
+        if self.mask:
+            #  TODO: check if mask is int-binary 0-1 and adjust if necessary
+            mask = self.data[self.mask_name].sel(timestep = ts).data
+            im = im*mask
+        
         if not self.ph<0:
             im = im == self.ph
             im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
+        
+
         
         outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         np.save(outpath, im)
         
     def nc_to_set_of_npy(self):
         imdata = self.data[self.array_name]
+        
+        if not self.mask:
+            print('no mask considered')
+        else:
+            if self.mask_name in self.data.keys():
+                print('use "'+self.mask_name+'" as mask')
+            else:
+                print('"'+self.mask_name+'" not found in dataset. no mask considered')
+                self.mask = False
+        
         if self.ts<0:
             print('processing all time steps')
             timesteps = imdata.timestep.data
@@ -110,6 +128,8 @@ if __name__ == '__main__':
     parser.add_argument('-ts', '--time_step', type = int, default=0, help = 'time step that is processed, -1 for all')
     parser.add_argument('-sn', '--segmented_name', type = str, default = 'segmented', help = 'name of the data array in the .nc')
     parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all')
+    parser.add_argument('-mk', '--mask', type = bool, default = False, help='wheter to use the mask in the segmented data (if available)')
+    parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
     
     args = parser.parse_args()
     
