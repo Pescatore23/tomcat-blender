@@ -90,7 +90,7 @@ class volume_maker:
                 gpu_id = i%num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
         
                 with cp.cuda.Device(gpu_id):
-                    im = cp.array(im)
+                    mask = cp.array(mask)
                     mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
                     mask = cp.asnumpy(mask)
                     mempool = cp.get_default_memory_pool()
