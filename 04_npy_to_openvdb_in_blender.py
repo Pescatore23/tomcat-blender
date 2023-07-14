@@ -49,7 +49,10 @@ def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     im = np.load(os.path.join(toppath,file))
     imc = im[x1:x2,y1:y2,z1:z2]
     # im = im*1.0
+    im1 = imc == 0
+    im2 = imc == 2
     
+    imc = im1*1.0 + im2*2.0
     
     grid = openvdb.FloatGrid()
     grid.copyFromArray(imc.astype(float))
