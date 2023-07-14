@@ -99,7 +99,13 @@ class volume_maker:
             else: 
                 mask = ndimage.binary_dilation(mask, structure=ball(self.mask_dilate))
             
+            # manual shift because membrane =0
+            im = im -1
+            
             im = im*mask
+            
+            # reshift
+            im = im+1
         
         if not self.ph<0:
             im = im == self.ph
