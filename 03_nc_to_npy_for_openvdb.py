@@ -56,6 +56,7 @@ class volume_maker:
         self.ph = args.phase
         self.mask = args.mask
         self.mask_name = args.mask_name
+        self.mask_dilate = args.mask_dilate
     	
         
     def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 20, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
@@ -77,13 +78,27 @@ class volume_maker:
             
         return im
     
-    def xarray_to_npy(self, im, ts, i=0):
+    def xarray_to_npy(self, im, ts, i=0, GPU = True, GPU_avail=GPU_avail):
         
         if self.mask:
             #  TODO: check if mask is int-binary 0-1 and adjust if necessary
             a,b,c,d,e,f = self.data.attrs['cropping of seg data']
             im = im[a:b,c:d,e:f]
             mask = self.data[self.mask_name].sel(timestep = ts).data
+            
+            if GPU and GPU_avail:
+                gpu_id = i%num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
+        
+                with cp.cuda.Device(gpu_id):
+                    im = cp.array(im)
+                    mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
+                    mask = cp.asnumpy(mask)
+                    mempool = cp.get_default_memory_pool()
+                    mempool.free_all_blocks()
+                
+            else: 
+                mask = ndimage.binary_dilation(mask, structure=ball(self.mask_dilate))
+            
             im = im*mask
         
         if not self.ph<0:
@@ -132,6 +147,7 @@ if __name__ == '__main__':
     parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all')
     parser.add_argument('-mk', '--mask', type = bool, default = False, help='wheter to use the mask in the segmented data (if available)')
     parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
+    parser.add_argument('-md', '--mask_dilate', type = int, default = 3, help='dilation radius of mask')
     
     args = parser.parse_args()
     
