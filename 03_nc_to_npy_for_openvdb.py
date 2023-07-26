@@ -62,7 +62,7 @@ class volume_maker:
     def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 20, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
         if clean or remove_small:
             if GPU and GPU_avail:
-                gpu_id = i%num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
+                gpu_id = i%4+1 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
         
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
@@ -87,7 +87,7 @@ class volume_maker:
             mask = self.data[self.mask_name].sel(timestep = ts).data
             
             if GPU and GPU_avail:
-                gpu_id = i%num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
+                gpu_id = i%4+1 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
         
                 with cp.cuda.Device(gpu_id):
                     mask = cp.array(mask)
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all')
     parser.add_argument('-mk', '--mask', type = bool, default = False, help='wheter to use the mask in the segmented data (if available)')
     parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
-    parser.add_argument('-md', '--mask_dilate', type = int, default = 3, help='dilation radius of mask')
+    parser.add_argument('-md', '--mask_dilate', type = int, default = 8, help='dilation radius of mask')
     
     args = parser.parse_args()
     
