@@ -14,8 +14,8 @@ import numpy as np
 import pyopenvdb as openvdb
 
 
-toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5II/all_phases_npy'
-topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5II/combined_vdb'
+toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/4/all_phases_npy'
+topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/4/combined_vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
