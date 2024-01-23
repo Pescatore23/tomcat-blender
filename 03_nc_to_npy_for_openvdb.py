@@ -145,7 +145,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_path', type = str, default = '', help = 'path to folder that will contain the .npy files')
     parser.add_argument('-i', '--input_path', type=str, default='', help = 'path to the .nc-file containing the segmented data')
     parser.add_argument('-cl', '--clean_image', type = bool, default = True, help = 'wheter to remove spurious pixel by binaray opening')
-    parser.add_argument('-fp', '--footprint', type = int, default = 1, help = 'radius of the sphere stencel used for the binary opening')
+    parser.add_argument('-fp', '--footprint', type = float, default = 1, help = 'radius of the sphere stencel used for the binary opening')
     parser.add_argument('-rs', '--remove_small', type = bool, default=True, help = 'wheter to remove objects smaller than minsize')
     parser.add_argument('-ms', '--minsize', type = int, default=20, help = 'minimum size of connected objects to keep')
     parser.add_argument('-ts', '--time_step', type = int, default=0, help = 'time step that is processed, -1 for all')
