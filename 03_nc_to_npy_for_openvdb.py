@@ -83,6 +83,9 @@ class volume_maker:
         outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         
         if os.path.exists(outpath) and not overwrite:
+            
+            im = im.data
+            
             if self.mask:
                 #  TODO: check if mask is int-binary 0-1 and adjust if necessary
                 a,b,c,d,e,f = self.data.attrs['cropping of seg data']
@@ -136,7 +139,7 @@ class volume_maker:
             timesteps = imdata.timestep.data
             length = len(timesteps)
              
-            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]).data, timesteps[i], i) for i in range(length))
+            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]), timesteps[i], i) for i in range(length))
             
         else:
             print('processing time step ',str(self.ts))
