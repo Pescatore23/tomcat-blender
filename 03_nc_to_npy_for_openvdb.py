@@ -78,42 +78,45 @@ class volume_maker:
             
         return im
     
-    def xarray_to_npy(self, im, ts, i=0, GPU = True, GPU_avail=GPU_avail):
+    def xarray_to_npy(self, im, ts, i=0, GPU = True, GPU_avail=GPU_avail, overwrite=False):
         
-        if self.mask:
-            #  TODO: check if mask is int-binary 0-1 and adjust if necessary
-            a,b,c,d,e,f = self.data.attrs['cropping of seg data']
-            im = im[a:b,c:d,e:f]
-            mask = self.data[self.mask_name].sel(timestep = ts).data
-            
-            if GPU and GPU_avail:
-                gpu_id = i%5 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
+        outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         
-                with cp.cuda.Device(gpu_id):
-                    mask = cp.array(mask)
-                    mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
-                    mask = cp.asnumpy(mask)
-                    mempool = cp.get_default_memory_pool()
-                    mempool.free_all_blocks()
+        if os.path.exists(outpath) and not overwrite:
+            if self.mask:
+                #  TODO: check if mask is int-binary 0-1 and adjust if necessary
+                a,b,c,d,e,f = self.data.attrs['cropping of seg data']
+                im = im[a:b,c:d,e:f]
+                mask = self.data[self.mask_name].sel(timestep = ts).data
                 
-            else: 
-                mask = ndimage.binary_dilation(mask, structure=ball(self.mask_dilate))
+                if GPU and GPU_avail:
+                    gpu_id = i%5 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
             
-            # manual shift because membrane =0
-            im = im -1
+                    with cp.cuda.Device(gpu_id):
+                        mask = cp.array(mask)
+                        mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
+                        mask = cp.asnumpy(mask)
+                        mempool = cp.get_default_memory_pool()
+                        mempool.free_all_blocks()
+                    
+                else: 
+                    mask = ndimage.binary_dilation(mask, structure=ball(self.mask_dilate))
+                
+                # manual shift because membrane =0
+                im = im -1
+                
+                im = im*mask
+                
+                # reshift
+                im = im+1
             
-            im = im*mask
-            
-            # reshift
-            im = im+1
-        
-        if not self.ph<0:
-            im = im == self.ph
-            im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
+            if not self.ph<0:
+                im = im == self.ph
+                im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
         
 
         
-        outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
+        
         np.save(outpath, im)
         
     def nc_to_set_of_npy(self):
