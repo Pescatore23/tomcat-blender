@@ -22,7 +22,7 @@ import argparse
 # TODO: make this more elegant
 try:
     import cupy as cp
-    import cucim
+    import cucim.skimage
     GPU_avail = True
 except:
     print("cupy or cucim not found, can't use GPU")
