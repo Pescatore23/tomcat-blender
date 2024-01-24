@@ -82,7 +82,7 @@ class volume_maker:
         
         outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         
-        if os.path.exists(outpath) and not overwrite:
+        if not os.path.exists(outpath) and not overwrite:
             
             im = im.data
             
@@ -120,7 +120,7 @@ class volume_maker:
 
         
         
-        np.save(outpath, im)
+            np.save(outpath, im)
         
     def nc_to_set_of_npy(self):
         imdata = self.data[self.array_name]
