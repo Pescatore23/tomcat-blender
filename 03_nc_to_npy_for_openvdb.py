@@ -66,6 +66,8 @@ class volume_maker:
         
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
+		    print(im.shape)
+		    print(clean, remove_small)
                     if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     im = cp.asnumpy(im)
@@ -73,7 +75,7 @@ class volume_maker:
                     mempool.free_all_blocks()
                 
             else: 
-                print(clean, remove_small)
+                print(str(clean), str(remove_small))
                 if clean: im = ndimage.binary_opening(im, structure=ball(fp_radius))
                 if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
             

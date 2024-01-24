@@ -14,8 +14,9 @@ import numpy as np
 import pyopenvdb as openvdb
 
 
-toppath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/4/all_phases_npy'
-topoutpath = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/4/combined_vdb'
+toppath = '/mnt/SSD/fische_r/blender_visualization/4/nc_to_npy_per_ts/phase_0'
+# topoutpath = '/mnt/SSD/fische_r/blender_visualization/4/nc_to_npy_per_ts/phase_vdb/'
+topoutpath = toppath+'_vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
@@ -48,11 +49,12 @@ def check_npy_folder(toppath):
 def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     im = np.load(os.path.join(toppath,file))
     imc = im[x1:x2,y1:y2,z1:z2]
-    # im = im*1.0
-    im1 = imc == 0
-    im2 = imc == 2
     
-    imc = im1*1.0 + im2*2.0
+    # im1 = imc == 0
+    # im2 = imc == 2
+    
+    # imc = im1*1.0 + im2*2.0
+    imc = im*1.0
     
     grid = openvdb.FloatGrid()
     grid.copyFromArray(imc.astype(float))
