@@ -75,7 +75,6 @@ class volume_maker:
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
                     print(im.shape)
-                    print(clean, remove_small)
                     if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     im = cp.asnumpy(im)
@@ -83,7 +82,6 @@ class volume_maker:
                     mempool.free_all_blocks()
                 
             else: 
-                print(str(clean), str(remove_small))
                 if clean: im = ndimage.binary_opening(im, structure=ball(fp_radius))
                 if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
             
@@ -94,8 +92,7 @@ class volume_maker:
         outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         
         if not os.path.exists(outpath) and not overwrite:
-            
-            im = im.data
+            # im = im.data
             
             if self.mask:
                 #  TODO: check if mask is int-binary 0-1 and adjust if necessary
@@ -125,9 +122,10 @@ class volume_maker:
                 im = im+1
             
             if not self.ph<0:
+                print(type(im), type(self.ph))
                 im = im == self.ph
-                print(self.clean , self.remove_small)
-                im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
+                print(im.shape)
+                im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint); print(im.shape)
         
 
         
@@ -151,7 +149,7 @@ class volume_maker:
             timesteps = imdata.timestep.data
             length = len(timesteps)
              
-            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]), timesteps[i], i) for i in range(length))
+            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]).data, timesteps[i], i) for i in range(length))
             
         else:
             print('processing time step ',str(self.ts))
@@ -177,7 +175,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     VM = volume_maker(args)
-    print(VM.clean, VM.remove_small)
     
     # lazy load the data
     VM.data = xr.open_dataset(args.input_path)
