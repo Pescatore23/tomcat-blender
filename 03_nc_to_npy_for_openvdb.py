@@ -118,6 +118,7 @@ class volume_maker:
             
             if not self.ph<0:
                 im = im == self.ph
+                print(self.clean , self.remove_small)
                 im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
         
 
@@ -164,9 +165,11 @@ if __name__ == '__main__':
     parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
     parser.add_argument('-md', '--mask_dilate', type = int, default = 8, help='dilation radius of mask')
     
+    
     args = parser.parse_args()
     
     VM = volume_maker(args)
+    print(VM.clean_image, VM.remove_small)
     
     # lazy load the data
     VM.data = xr.open_dataset(args.input_path)
