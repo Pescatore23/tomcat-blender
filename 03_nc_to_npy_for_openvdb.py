@@ -73,6 +73,7 @@ class volume_maker:
                     mempool.free_all_blocks()
                 
             else: 
+                print(clean, remove_small)
                 if clean: im = ndimage.binary_opening(im, structure=ball(fp_radius))
                 if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
             
