@@ -18,6 +18,7 @@ import socket
 from scipy import ndimage
 host = socket.gethostname()
 import argparse
+from time import sleep
 
 # TODO: make this more elegant
 try:
@@ -48,6 +49,17 @@ def str2bool(v):
         return False
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
+
+def find_free_GPU_memory(gpu_id):
+    free = cp.cuda.Device(gpu_id).mem_info[0]/cp.cuda.Device(gpu_id).mem_info[1]
+    
+    while free<0.25:
+        gpu_id = (gpu_id+1)%num_GPU #for all available GPUs
+        sleep(1)
+        free = cp.cuda.Device(gpu_id).mem_info[0]/cp.cuda.Device(gpu_id).mem_info[1]
+        
+    return gpu_id
+        
     
     
 class volume_maker:
@@ -71,7 +83,7 @@ class volume_maker:
         if clean or remove_small:
             if GPU and GPU_avail:
                 gpu_id = i%5 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
-        
+                gpu_id = find_free_GPU_memory(gpu_id)
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
                     if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
@@ -102,7 +114,8 @@ class volume_maker:
                 
                 if GPU and GPU_avail:
                     gpu_id = i%5 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
-            
+                    
+                    gpu_id = find_free_GPU_memory(gpu_id)
                     with cp.cuda.Device(gpu_id):
                         mask = cp.array(mask)
                         mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
