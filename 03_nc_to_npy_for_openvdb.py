@@ -74,7 +74,6 @@ class volume_maker:
         
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
-                    print(im.shape)
                     if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     im = cp.asnumpy(im)
@@ -87,12 +86,13 @@ class volume_maker:
             
         return im
     
-    def xarray_to_npy(self, im, ts, i=0, GPU = True, GPU_avail=GPU_avail, overwrite=False):
+    def xarray_to_npy(self, imdata, ts, i=0, GPU = True, GPU_avail=GPU_avail, overwrite=False):
         
         outpath = os.path.join(self.topoutfolder, self.array_name+'_phase_'+str(self.ph)+'_ts_'+f'{ts:04d}'+'.npy')
         
         if not os.path.exists(outpath) and not overwrite:
             # im = im.data
+            im = imdata.sel(timestep=ts).data
             
             if self.mask:
                 #  TODO: check if mask is int-binary 0-1 and adjust if necessary
@@ -122,10 +122,8 @@ class volume_maker:
                 im = im+1
             
             if not self.ph<0:
-                print(type(im), type(self.ph))
                 im = im == self.ph
-                print(im.shape)
-                im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint); print(im.shape)
+                im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
         
 
         
@@ -149,8 +147,8 @@ class volume_maker:
             timesteps = imdata.timestep.data
             length = len(timesteps)
              
-            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata.sel(timestep=timesteps[i]).data, timesteps[i], i) for i in range(length))
-            
+            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata, timesteps[i], i) for i in range(length))
+            # .sel(timestep=timesteps[i]).data
         else:
             print('processing time step ',str(self.ts))
             self.xarray_to_npy(imdata.sel(timestep=self.ts).data, self.ts)
