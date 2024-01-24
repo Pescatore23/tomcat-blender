@@ -48,6 +48,11 @@ def check_npy_folder(toppath):
 
 def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     im = np.load(os.path.join(toppath,file))
+    
+    # special crop for sample 4 GDL
+    im[:,:170,:] = False
+    im[:,:,:230] = False
+    
     imc = im[x1:x2,y1:y2,z1:z2]
     
     # im1 = imc == 0

@@ -50,12 +50,12 @@ def str2bool(v):
     else:
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
-def find_free_GPU_memory(gpu_id):
+def find_free_GPU_memory(gpu_id, limit=0.5):
     free = cp.cuda.Device(gpu_id).mem_info[0]/cp.cuda.Device(gpu_id).mem_info[1]
     
-    while free<0.25:
+    while free<limit:
         gpu_id = (gpu_id+1)%num_GPU #for all available GPUs
-        sleep(1)
+        sleep(2)
         free = cp.cuda.Device(gpu_id).mem_info[0]/cp.cuda.Device(gpu_id).mem_info[1]
         
     return gpu_id
