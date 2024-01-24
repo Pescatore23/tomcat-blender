@@ -151,7 +151,7 @@ class volume_maker:
             # .sel(timestep=timesteps[i]).data
         else:
             print('processing time step ',str(self.ts))
-            self.xarray_to_npy(imdata.sel(timestep=self.ts).data, self.ts)
+            self.xarray_to_npy(imdata, self.ts)
 
 if __name__ == '__main__':
     ### Parse arguments
