@@ -77,6 +77,7 @@ class volume_maker:
         self.mask = args.mask
         self.mask_name = args.mask_name
         self.mask_dilate = args.mask_dilate
+        self.erode = args.erode
     	
         
     def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 20, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
@@ -88,6 +89,7 @@ class volume_maker:
                     im = cp.array(im)
                     if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
+                    if self.erode >0: im = cucim.skimage.morphology.binary_erosion(im, footprint=cucim.skimage.morphology.ball(self.erode))
                     im = cp.asnumpy(im)
                     mempool = cp.get_default_memory_pool()
                     mempool.free_all_blocks()
@@ -95,6 +97,7 @@ class volume_maker:
             else: 
                 if clean: im = ndimage.binary_opening(im, structure=ball(fp_radius))
                 if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
+                if self.erode >0: im = ndimage.binary_erosion(im, structure=ball(self.erode))
             
         return im
     
@@ -181,6 +184,7 @@ if __name__ == '__main__':
     parser.add_argument('-mk', '--mask', type = str2bool, default = False, help='wheter to use the mask in the segmented data (if available)')
     parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
     parser.add_argument('-md', '--mask_dilate', type = int, default = 8, help='dilation radius of mask')
+    parser.add_argument('-er', '--erode', type = int, default = 0, help='erosion radius')
     
     
     args = parser.parse_args()
