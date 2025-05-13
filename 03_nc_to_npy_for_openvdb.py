@@ -78,12 +78,14 @@ class volume_maker:
         self.mask_name = args.mask_name
         self.mask_dilate = args.mask_dilate
         self.erode = args.erode
+        self.num_GPU = args.num_GPU
+        self.n_jobs = args.n_jobs
     	
         
     def clean_binary_image(self, im, clean = True, remove_small=True,  minsize = 20, fp_radius = 1, i=0, GPU = True, GPU_avail=GPU_avail):
         if clean or remove_small:
             if GPU and GPU_avail:
-                gpu_id = i%5 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
+                gpu_id = i%self.num_GPU #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
                 gpu_id = find_free_GPU_memory(gpu_id)
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
@@ -116,7 +118,7 @@ class volume_maker:
                 mask = self.data[self.mask_name].sel(timestep = ts).data
                 
                 if GPU and GPU_avail:
-                    gpu_id = i%5 #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
+                    gpu_id = i%self.num_GPU #num_GPU #use gpus 1 through 4, leaving the big A40 (0) alone or i%5 to use all 5
                     
                     gpu_id = find_free_GPU_memory(gpu_id)
                     with cp.cuda.Device(gpu_id):
@@ -163,7 +165,7 @@ class volume_maker:
             timesteps = imdata.timestep.data
             length = len(timesteps)
              
-            Parallel(n_jobs=n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata, timesteps[i], i) for i in range(length))
+            Parallel(n_jobs=self.n_jobs, temp_folder=temp_folder)(delayed(self.xarray_to_npy)(imdata, timesteps[i], i) for i in range(length))
             # .sel(timestep=timesteps[i]).data
         else:
             print('processing time step ',str(self.ts))
@@ -185,6 +187,8 @@ if __name__ == '__main__':
     parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
     parser.add_argument('-md', '--mask_dilate', type = int, default = 8, help='dilation radius of mask')
     parser.add_argument('-er', '--erode', type = int, default = 0, help='erosion radius')
+    parser.add_argument('-ng', '--num_GPU', type = int, default = num_GPU, help='how many GPUs to use')
+    parser.add_argument('-nc', '--n_jobs', type = int, default = n_jobs, help='how many CPUs to use')
     
     
     args = parser.parse_args()
