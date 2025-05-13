@@ -11,33 +11,33 @@ run within blender to use pyopenvdb, it would eventually be nice to use pyopenvd
 
 import os
 import numpy as np
-import pyopenvdb as openvdb
+import openvdb
 
 
-toppath = '/mnt/SSD/fische_r/blender_visualization/4/nc_to_npy_per_ts/phase_0'
-# topoutpath = '/mnt/SSD/fische_r/blender_visualization/4/nc_to_npy_per_ts/phase_vdb/'
-topoutpath = toppath+'_vdb'
+toppath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m7_33_200_1_II/blender_data/npy'
+#toppath2 = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5II/crack_npy'
+topoutpath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m7_33_200_1_II/blender_data/vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
 
 
-#x1 = 0
-#x2 = -1
-#y1 = 0
-#y2 = -1
-#z1 = 0
-#z2 = -1
+x1 = 0
+x2 = -1
+y1 = 0
+y2 = -1
+z1 = 0
+z2 = -1
 ts = -1
 #ts = 40
 
 #modified crops, comment out
-x1 = 20
-x2 = -20
-y1 = 20
-y2 = -20
-z1 = 20
-z2 = -20
+#x1 = 20
+#x2 = -20
+#y1 = 20
+#y2 = -20
+#z1 = 20
+#z2 = -20
 
 def check_npy_folder(toppath):
     files = []
@@ -50,8 +50,8 @@ def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     im = np.load(os.path.join(toppath,file))
     
     # special crop for sample 4 GDL
-    im[:,:170,:] = False
-    im[:,:,:230] = False
+#    im[:,:170,:] = False
+ #   im[:,:,:230] = False
     
     imc = im[x1:x2,y1:y2,z1:z2]
     
@@ -79,7 +79,6 @@ if ts <0:
         convert_npy_to_vdb(files[i],toppath, topoutpath, x1, x2, y1, y2, z1, z2)
 else:
     file = files[ts]
-    file2 = files2[ts]
     print(file)
     convert_npy_to_vdb(file,toppath,topoutpath, x1,x2,y1,y2,z1,z2)
 
