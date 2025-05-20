@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 """
 Created on Tue Jun 20 14:53:48 2023
 
@@ -14,9 +14,9 @@ import numpy as np
 import openvdb
 
 
-toppath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m7_33_200_1_II/blender_data/npy'
+toppath = '/home/esrf/rofische/data_ihma664/NOBACKUP/wood/wood/blender_data/npy/'
 #toppath2 = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5II/crack_npy'
-topoutpath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m7_33_200_1_II/blender_data/vdb'
+topoutpath = '/home/esrf/rofische/data_ihma664/NOBACKUP/wood/wood/blender_data/vdb_wat'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
@@ -29,7 +29,7 @@ y2 = -1
 z1 = 0
 z2 = -1
 ts = -1
-#ts = 40
+#ts = 0
 
 #modified crops, comment out
 #x1 = 20
@@ -54,7 +54,9 @@ def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
  #   im[:,:,:230] = False
     
     imc = im[x1:x2,y1:y2,z1:z2]
-    
+    imc[imc==3] = 1
+    imc[~(imc==2)] = 0 # line to only get water
+    #imc[~(imc==1)] = 0 # line to only get solid
     # im1 = imc == 0
     # im2 = imc == 2
     
@@ -66,7 +68,7 @@ def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     grid.gridClass = openvdb.GridClass.FOG_VOLUME
     grid.name = 'density'
     
-    openvdb.write(os.path.join(topoutpath, file[:-3]+'vdb'), grid)
+    openvdb.write(os.path.join(topoutpath, 'water_'+file[:-3]+'vdb'), grid)
     
 
 
