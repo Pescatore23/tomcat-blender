@@ -24,7 +24,6 @@ from time import sleep
 try:
     import cupy as cp
     import cucim.skimage
-    import cupyx.scipy.ndimage as GPUndimage
     GPU_avail = True
 except:
     print("cupy or cucim not found, can't use GPU")
@@ -90,12 +89,9 @@ class volume_maker:
                 gpu_id = find_free_GPU_memory(gpu_id)
                 with cp.cuda.Device(gpu_id):
                     im = cp.array(im)
-                    # if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
-                    # if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
-                    # if self.erode >0: im = cucim.skimage.morphology.binary_erosion(im, footprint=cucim.skimage.morphology.ball(self.erode))
-                    if clean: im = GPUndimage.binary_opening(im, structure=cucim.skimage.morphology.ball(fp_radius))
+                    if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
-                    if self.erode >0: im = GPUndimage.binary_erosion(im, structure=cucim.skimage.morphology.ball(self.erode))
+                    if self.erode >0: im = cucim.skimage.morphology.binary_erosion(im, footprint=cucim.skimage.morphology.ball(self.erode))
                     im = cp.asnumpy(im)
                     mempool = cp.get_default_memory_pool()
                     mempool.free_all_blocks()
@@ -127,8 +123,7 @@ class volume_maker:
                     gpu_id = find_free_GPU_memory(gpu_id)
                     with cp.cuda.Device(gpu_id):
                         mask = cp.array(mask)
-                        # mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
-                        mask = GPUndimage.binary_dilation(mask, structure=cucim.skimage.morphology.ball(self.mask_dilate))
+                        mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
                         mask = cp.asnumpy(mask)
                         mempool = cp.get_default_memory_pool()
                         mempool.free_all_blocks()
