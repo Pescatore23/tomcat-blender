@@ -93,7 +93,8 @@ class volume_maker:
                     # if clean: im = cucim.skimage.morphology.binary_opening(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     # if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     # if self.erode >0: im = cucim.skimage.morphology.binary_erosion(im, footprint=cucim.skimage.morphology.ball(self.erode))
-                    if clean: im = GPUndimage.binary_opening(im, structure=cucim.skimage.morphology.ball(fp_radius))
+                    # if clean: im = GPUndimage.binary_opening(im, structure=cucim.skimage.morphology.ball(fp_radius))
+                    if clean: im = GPUndimage.median_filter(im, structure=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     if self.erode >0: im = GPUndimage.binary_erosion(im, structure=cucim.skimage.morphology.ball(self.erode))
                     im = cp.asnumpy(im)
@@ -137,16 +138,26 @@ class volume_maker:
                     mask = ndimage.binary_dilation(mask, structure=ball(self.mask_dilate))
                 
                 # manual shift because membrane =0
-                im = im -1
+                im = im +10
                 
                 im = im*mask
                 
                 # reshift
-                im = im+1
+                im = im-10
             
             if not self.ph<0:
                 im = im == self.ph
                 im = self.clean_binary_image(im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
+            else:
+                # clean every phase separately, will create some overlap TODO: allow decision what to assign, current behavior: overlap becomes the higher value
+                phases = np.unique(im)
+                im_copy = im.copy()
+                for phase in phases:
+                    phase_im = im_copy == phase
+                    phase_im = self.clean_binary_image(phase_im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
+                    im[phase_im] = phase
+                    
+                
         
 
         
