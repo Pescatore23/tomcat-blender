@@ -94,7 +94,7 @@ class volume_maker:
                     # if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     # if self.erode >0: im = cucim.skimage.morphology.binary_erosion(im, footprint=cucim.skimage.morphology.ball(self.erode))
                     # if clean: im = GPUndimage.binary_opening(im, structure=cucim.skimage.morphology.ball(fp_radius))
-                    if clean: im = GPUndimage.median_filter(im, structure=cucim.skimage.morphology.ball(fp_radius))
+                    if clean: im = GPUndimage.median_filter(im, footprint=cucim.skimage.morphology.ball(fp_radius))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     if self.erode >0: im = GPUndimage.binary_erosion(im, structure=cucim.skimage.morphology.ball(self.erode))
                     im = cp.asnumpy(im)
@@ -102,7 +102,8 @@ class volume_maker:
                     mempool.free_all_blocks()
                 
             else: 
-                if clean: im = ndimage.binary_opening(im, structure=ball(fp_radius))
+                # if clean: im = ndimage.binary_opening(im, structure=ball(fp_radius))
+                if clean: im = ndimage.median_filter(im, footprint=ball(fp_radius))
                 if remove_small: im = morphology.remove_small_objects(im, min_size=minsize)
                 if self.erode >0: im = ndimage.binary_erosion(im, structure=ball(self.erode))
             
