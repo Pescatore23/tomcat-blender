@@ -14,9 +14,9 @@ import numpy as np
 import openvdb
 
 
-toppath = '/home/esrf/rofische/data_ihma664/NOBACKUP/wood/wood/blender_data/npy_water_clean/'
+toppath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m4_33_050_2/blender_data/npy/'
 #toppath2 = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5II/crack_npy'
-topoutpath = '/home/esrf/rofische/data_ihma664/NOBACKUP/wood/wood/blender_data/vdb_wat_clean'
+topoutpath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m4_33_050_2/blender_data/vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
@@ -55,9 +55,9 @@ def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     
     imc = im[x1:x2,y1:y2,z1:z2]
     imc[imc==3] = 1
-    #imc[~(imc==2)] = 0 # line to only get water from ph -1
+    #imc[~(imc==2)] = 0 # line to only get water
     #imc[~(imc==1)] = 0 # line to only get solid
-    imc[imc==1] =2 #convert binary to water 2 when running ph 2
+    #imc[imc==1] = 2 # line to convert binary water to color water
     # im1 = imc == 0
     # im2 = imc == 2
     
