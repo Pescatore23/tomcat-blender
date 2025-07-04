@@ -14,12 +14,14 @@ import numpy as np
 import openvdb
 
 
-toppath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m4_33_050_2/blender_data/npy/'
+toppath = '/home/esrf/rofische/data_ihma664/PROCESSED_DATA/TOMCAT/Tomcat_2/R_m4_33_050_2/blender_data/npy/'
 #toppath2 = '/mpc/homes/fische_r/NAS/DASCOELY/processing/04_membrane_ML/5II/crack_npy'
-topoutpath = '/home/esrf/rofische/data_robert/Tomcat_2/R_m4_33_050_2/blender_data/vdb'
+topoutpath = '/home/esrf/rofische/data_ihma664/PROCESSED_DATA/TOMCAT/Tomcat_2/R_m4_33_050_2/blender_data/vdb'
 
 if not os.path.exists(topoutpath):
     os.mkdir(topoutpath)
+    
+overwrite = False
 
 
 x1 = 0
@@ -69,7 +71,7 @@ def convert_npy_to_vdb(file,toppath, topoutpath, x1,x2,y1,y2,z1,z2):
     grid.gridClass = openvdb.GridClass.FOG_VOLUME
     grid.name = 'density'
     
-    openvdb.write(os.path.join(topoutpath, 'water_'+file[:-3]+'vdb'), grid)
+    openvdb.write(os.path.join(topoutpath, file[:-3]+'vdb'), grid)
     
 
 
@@ -79,7 +81,9 @@ files.sort()
 
 if ts <0:
     for i in range(len(files)):
-        convert_npy_to_vdb(files[i],toppath, topoutpath, x1, x2, y1, y2, z1, z2)
+        file = files[i]
+        if not os.path.exists(os.path.join(topoutpath, file[:-3]+'vdb')) and not overwrite:
+            convert_npy_to_vdb(file,toppath, topoutpath, x1, x2, y1, y2, z1, z2)
 else:
     file = files[ts]
     print(file)
