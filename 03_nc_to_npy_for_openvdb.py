@@ -159,7 +159,7 @@ class volume_maker:
                     phase_im = im == phase
                     phase_im = self.clean_binary_image(phase_im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
                     im_new[phase_im] = phase
-                    
+                im = im_new    
                 
         
 
