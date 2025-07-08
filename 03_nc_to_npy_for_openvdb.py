@@ -75,6 +75,7 @@ class volume_maker:
         self.topoutfolder = args.output_path
         self.array_name = args.segmented_name
         self.ph = args.phase
+        self.eph = args.exclude_phase
         self.mask = args.mask
         self.mask_name = args.mask_name
         self.mask_dilate = args.mask_dilate
@@ -152,11 +153,12 @@ class volume_maker:
             else:
                 # clean every phase separately, will create some overlap TODO: allow decision what to assign, current behavior: overlap becomes the higher value
                 phases = np.unique(im)
-                im_copy = im.copy()
+                im_new = np.zeros_like(im)  
                 for phase in phases:
-                    phase_im = im_copy == phase
+                    if phase in self.eph: continue
+                    phase_im = im == phase
                     phase_im = self.clean_binary_image(phase_im, i=i, clean = self.clean , remove_small=self.remove_small,  minsize = self.minsize, fp_radius = self.footprint)
-                    im[phase_im] = phase
+                    im_new[phase_im] = phase
                     
                 
         
@@ -200,6 +202,7 @@ if __name__ == '__main__':
     parser.add_argument('-ts', '--time_step', type = int, default=0, help = 'time step that is processed, -1 for all')
     parser.add_argument('-sn', '--segmented_name', type = str, default = 'segmented', help = 'name of the data array in the .nc')
     parser.add_argument('-ph', '--phase', type = int, default = 1, help='which phase to extract, -1 for all')
+    parser.add_argument('-eph', '--exclude_phase', type = list, default= [], help= 'phase(s) to exclude, default none')
     parser.add_argument('-mk', '--mask', type = str2bool, default = False, help='wheter to use the mask in the segmented data (if available)')
     parser.add_argument('-mn', '--mask_name', type = str, default = '', help='name of the mask in the segmented data (if available)')
     parser.add_argument('-md', '--mask_dilate', type = int, default = 8, help='dilation radius of mask')
