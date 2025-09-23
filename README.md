@@ -32,3 +32,18 @@ required packages: xarray, scikit-image, trimesh, numpy
 	<path_to_binary>blender.exe blend-file.blend --background --python testanimscriptfull.py
 	```
 1. (optional) adjust frame and sampling rate, better option: create separate avi-files, merge and convert to mkv, e.g. combining ImageJ and ffmpeg
+
+## Video archieving and compression
+
+Once you have the frames from blender, you can create a video, e.g. by saving a stack in ImageJ to avi. Select none for compression.
+Convert ImageJ-avi to mkv as recommended by the ETH research collection for long time storage. Typically reduces file size substantially.
+
+```
+ffmpeg -i input.avi output.mkv -acodec libfaac -vcodec ffv1
+```
+
+currently best working method to get videos suitable for ppt-presentations:
+
+```
+ffmpeg -i input-video.mkv -vf "crop=trunc(iw/2)*2:trunc(ih/2)*2" -q:a 2 -q:v 4 -vcodec wmv2 -acodec wmav2 output-video.avi
+```

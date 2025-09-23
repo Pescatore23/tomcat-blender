@@ -46,7 +46,7 @@ This is a repository to automatically render beautifully 4D-image data. In devel
 git clone https://gitlab.empa.ch/firo/tomcat_blender.git	
 ```
 
-## Videos
+## Video archieving and compression
 
 Convert ImageJ-avi to mkv as recommended by the ETH research collection for long time storage. 
 
