@@ -33,7 +33,7 @@ required packages: xarray, scikit-image, trimesh, numpy
 	```
 1. (optional) adjust frame and sampling rate, better option: create separate avi-files, merge and convert to mkv, e.g. combining ImageJ and ffmpeg
 
-## Video archieving and compression
+## Video archiving and compression
 
 Once you have the frames from blender, you can create a video, e.g. by saving a stack in ImageJ to avi. Select none for compression.
 Convert ImageJ-avi to mkv as recommended by the ETH research collection for long time storage. Typically reduces file size substantially.
