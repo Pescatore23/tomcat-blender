@@ -62,6 +62,17 @@ def convert_npy_to_vdb(file,file2, toppath,toppath2, topoutpath, x1,x2,y1,y2,z1,
     grid.gridClass = openvdb.GridClass.FOG_VOLUME
     grid.name = 'density'
     
+    
+    #AI suggestions for performance improvement
+    grid.tree().prune(tolerance=1e-6) 
+    grid.tree().compress()
+    
+    
+    # print(grid.transform.voxelSize()) I guess I can then set a new value ? voxel doesn't make sense , hallucinating
+    # print grid.tree().leafDim()  16 good ?, 1 volume bounce , step rate 1.5, 
+    # printgrid.activeVoxelCount()
+
+    
     openvdb.write(os.path.join(topoutpath, file[:-3]+'vdb'), grid)
     
 
