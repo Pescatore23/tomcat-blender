@@ -5,8 +5,10 @@ import openvdb
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--path', type = str, default = '', help = ".npy")
 
+args = parser.parse_args()
+
 path = args.path
-vdbpath = pat.replace('npy', 'vdb'
+vdbpath = path.replace('npy', 'vdb')
 
 im = np.load(path)
 
