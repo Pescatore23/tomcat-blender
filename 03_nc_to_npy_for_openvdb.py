@@ -5,6 +5,8 @@ Created on Tue Jun 20 13:37:40 2023
 extracts numpy boolean array from nc and stores as npy
 strips all metadata, but allows to process volume data within blender using pyopenvdb
 
+TODO replace all cucim functions, module cannot reliably installed without hassle
+
 @author: fische_r
 """
 
@@ -18,7 +20,8 @@ import socket
 from scipy import ndimage
 host = socket.gethostname()
 import argparse
-from time import sleep
+from time import sleep 
+
 
 # TODO: make this more elegant
 try:
@@ -32,7 +35,7 @@ except:
 
 # default parameters
 
-# TODO: add GPU support once cucim/cupy allow GPU marching cubes
+# TODO: try vtk flying edges for surface mesh extraction
 # TODO: already allow cupy for matrix operations and loading, image cleaning already possible with GPU
 temp_folder = None
  
@@ -60,7 +63,12 @@ def find_free_GPU_memory(gpu_id, limit=0.5):
         free = cp.cuda.Device(gpu_id).mem_info[0]/cp.cuda.Device(gpu_id).mem_info[1]
         
     return gpu_id
-        
+
+def GPUball(fp_radius, gpu_id):
+    kern = ball(fp_radius)
+    with cp.cuda.Device(gpu_id):
+        kern = cp.array(im)
+    return
     
     
 class volume_maker:
@@ -95,9 +103,9 @@ class volume_maker:
                     # if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, min_size=minsize)
                     # if self.erode >0: im = cucim.skimage.morphology.binary_erosion(im, footprint=cucim.skimage.morphology.ball(self.erode))
                     # if clean: im = GPUndimage.binary_opening(im, structure=cucim.skimage.morphology.ball(fp_radius))
-                    if clean: im = GPUndimage.median_filter(im, footprint=cucim.skimage.morphology.ball(fp_radius))
+                    if clean: im = GPUndimage.median_filter(im, footprint=GPUball(fp_radius, gpu_id))
                     if remove_small: im = cucim.skimage.morphology.remove_small_objects(im, max_size=minsize)
-                    if self.erode >0: im = GPUndimage.binary_erosion(im, structure=cucim.skimage.morphology.ball(self.erode))
+                    if self.erode >0: im = GPUndimage.binary_erosion(im, structure=GPUball(self.erode, gpu_id)
                     im = cp.asnumpy(im)
                     mempool = cp.get_default_memory_pool()
                     mempool.free_all_blocks()
@@ -131,7 +139,7 @@ class volume_maker:
                     with cp.cuda.Device(gpu_id):
                         mask = cp.array(mask)
                         # mask = cucim.skimage.morphology.binary_dilation(mask, footprint=cucim.skimage.morphology.ball(self.mask_dilate))
-                        mask = GPUndimage.binary_dilation(mask, structure=cucim.skimage.morphology.ball(self.mask_dilate))
+                        mask = GPUndimage.binary_dilation(mask, structure=GPUball(self.mask_dilate, gpu_id))
                         mask = cp.asnumpy(mask)
                         mempool = cp.get_default_memory_pool()
                         mempool.free_all_blocks()
