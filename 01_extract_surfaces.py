@@ -2,6 +2,9 @@
 """
 Created on Fri Mar 25 08:39:28 2022
 
+
+deprecated, use vtk and flying edges instead of scikit-image marching cubes, massive better performance
+
 @author: firo
 """
 

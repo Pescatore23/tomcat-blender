@@ -25,7 +25,7 @@ bpy.ops.object.delete(confirm=False)
 
 mat = bpy.data.materials[material]
 
-def load_and_render_stl(filename, baseFolder=baseFolder, mat=mat, outfolder=outfolder):
+def load_and_render_vdb(filename, baseFolder=baseFolder, mat=mat, outfolder=outfolder):
     name = filename[:-4]
     outfile = os.path.join(outfolder, ''.join([name,'.png']))
     if not os.path.exists(outfile):
@@ -51,4 +51,4 @@ filenames = os.listdir(baseFolder)
 
 for filename in filenames:
 	if filename[-3:]=='vdb':
-		load_and_render_stl(filename)
+		load_and_render_vdb(filename)
