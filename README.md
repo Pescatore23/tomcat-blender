@@ -2,7 +2,8 @@
 
 ![lstopo](img/tomcat_blender_logo_sketch.png)
 
-Scripts to automate TOMCAT data visualization in blender with python.
+Scripts to automate 4D microtomography data visualization in blender with python.
+
 TODO:
 - [ ] make cool logo from current sketch
 
