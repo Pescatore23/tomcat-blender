@@ -58,7 +58,7 @@ The volume rendering was first used in my PhD thesis
 }
 ```
 
-and later in 
+and later for a peer-reviewed artical
 
 ```bibtex
 @article{Fischer2024,
@@ -74,3 +74,5 @@ and later in
 	file = {Fischer-2024-Gas-Induced Structural Damages in:C\:\\Users\\rofische\\Zotero\\storage\\FH98YRQW\\Fischer-2024-Gas-Induced Structural Damages in.pdf:application/pdf},
 }
 ```
+
+If you like the repository, please consider a citation
