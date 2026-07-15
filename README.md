@@ -26,7 +26,7 @@ TODO:
 	Windows
 
 	```bash
-	<path_to_binary>blender.exe blend-file.blend --background --python testanimscriptfull.py
+	<path_to_binary>blender.exe blend-file.blend --background --python 05_animscript_using_stl.py
 	```
 1. (optional) adjust frame and sampling rate, better option: create separate avi-files, merge and convert to mkv, e.g. combining ImageJ and ffmpeg
 
@@ -59,7 +59,7 @@ The volume rendering was first used in my PhD thesis
 }
 ```
 
-and later for a peer-reviewed artical
+and later for a peer-reviewed article
 
 ```bibtex
 @article{Fischer2024,
@@ -76,4 +76,4 @@ and later for a peer-reviewed artical
 }
 ```
 
-If you like the repository, please consider a citation
+If you like this repository, please consider a citation.
