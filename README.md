@@ -12,7 +12,7 @@ TODO:
 
 ### fancy and more performant way
 1. Convert numpy arrays to openvdb files, e.g. 04b_direct_npy_to_vdb.py. Execute the script using the blender python environment (either within blender or CLI) because installing openvdb yourself is a bit of an act. OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s.
-2. You can load the vdb files as animation in blender and then do everything there without the following steps.
+2. You can load the vdb files as single frames or animation in blender, filename pattern can be recognized
 3. I am sorry, I only know the very basics of blender:
    1. Import vdb as volume
    2. create or add a new material to volume with a volume shader
