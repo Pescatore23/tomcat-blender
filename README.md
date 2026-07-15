@@ -17,7 +17,7 @@ TODO:
 	or
 	
 	1. Convert numpy arrays to openvdb files, e.g. 04b_direct_npy_to_vdb.py. Execute using the blender python environment (either within blender or CLI) because installing openvdb yourself is a bit of an act.
-	OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s. You can load the vdb files as Animation in blender and then do everything there without the following steps.
+	OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s. You can load the vdb files as animation in blender and then do everything there without the following steps.
 
 1. Choose appropitate time step to set up scene and everything (e.g. cycles-render) in blender, do a test render, save the blend-file
 
