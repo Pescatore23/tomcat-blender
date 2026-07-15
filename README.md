@@ -11,30 +11,18 @@ TODO:
 ## How to use
 
 ### fancy and more performant way
-	1. Convert numpy arrays to openvdb files, e.g. 04b_direct_npy_to_vdb.py. Execute the script using the blender python environment (either within blender or CLI) because installing openvdb yourself is a bit of an act.
-	OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s. 
-	
-	1. You can load the vdb files as animation in blender and then do everything there without the following steps. 
-	
-	1. I am sorry, I only know the very basics of blender: 
-	
-		1. Import vdb as volume
-		
-		1. create or add a new material to volume with a volume shader
-		
-		1. place one or several light sources with sufficient power (blender interprets pixels by default as meters and your CT image are then up to several km high ;)
-		
-		1. adjust camera and viewport clipping to see your massive objects
-		
-		1. frame your object; trick: lock viewport to camera and "frame selected" vdb volume
-		
-		1. select "Cycles"
-		
-		1. render:
-		
-			1. single frame: "render image" and save result
-			
-			1. 4D data recognized automatically by blender as series: define output folder, "render animation" and come back the next day ;)
+1. Convert numpy arrays to openvdb files, e.g. 04b_direct_npy_to_vdb.py. Execute the script using the blender python environment (either within blender or CLI) because installing openvdb yourself is a bit of an act. OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s.
+2. You can load the vdb files as animation in blender and then do everything there without the following steps.
+3. I am sorry, I only know the very basics of blender:
+   1. Import vdb as volume
+   2. create or add a new material to volume with a volume shader
+   3. place one or several light sources with sufficient power (blender interprets pixels by default as meters and your CT image are then up to several km high ;)
+   4. adjust camera and viewport clipping to see your massive objects
+   5. frame your object; trick: lock viewport to camera and "frame selected" vdb volume
+   6. select "Cycles"
+   7. render:
+   		8. single frame: "render image" and save result
+     9. data recognized automatically by blender as series: define output folder, "render animation" and come back the next day ;)
 		
 
 ### Classic way using stl
