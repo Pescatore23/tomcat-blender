@@ -14,10 +14,10 @@ TODO:
 1. Convert numpy arrays to openvdb files, e.g. 04b_direct_npy_to_vdb.py. Execute the script using the blender python environment (either within blender or CLI) because installing openvdb yourself is a bit of an act. OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s.
 2. You can load the vdb files as single frames or animation in blender, filename pattern can be recognized
 3. I am sorry, I only know the very basics of blender:
-   1. Import vdb as volume. If blender crashes, switch to wireframe preview before loading the volume
-   2. create or add a new material to volume with a volume shader linking the density node of volume info
+   1. import vdb as volume. If blender crashes, switch to wireframe preview before loading the volume
+   2. create or add a material to the volume that contains the volume shader linked to the density node of volume info
    3. place one or several light sources with sufficient power (blender interprets pixels by default as meters and your CT image are then up to several km high ;)
-   4. adjust camera and viewport clipping to see your massive kilometer sized objects
+   4. adjust camera and viewport clipping to see your massive objects. Not sure if there is any behavior like hard cut-off distances in Blender that would warrant to adjust the reference size.
    5. frame your object; trick: lock viewport to camera and "frame selected" vdb volume
    6. select "Cycles" and "GPU compute" if available
    7. render:
@@ -28,7 +28,7 @@ TODO:
 ### Classic way using stl
 1. Create data files usable in blender
 
-	1. Extract series stl-files for desired time series with, e.g. 01_extract_surfaces.py, but better use VTK and flying edges either in python or ParaView
+	1. Extract series stl-files for desired time series with, e.g. 01_extract_surfaces.py, but better use VTK and flying edges either in Python or ParaView
 	
 
 1. Choose appropitate time step to set up scene and everything (e.g. cycles-render) in blender, do a test render, save the blend-file
@@ -85,7 +85,6 @@ and later for a peer-reviewed article
 	author = {Fischer, Robert and Dessiex, Matthieu A. and Marone, Federica and Büchi, Felix N.},
 	year = {2024},
 	pages = {3590--3601},
-	file = {Fischer-2024-Gas-Induced Structural Damages in:C\:\\Users\\rofische\\Zotero\\storage\\FH98YRQW\\Fischer-2024-Gas-Induced Structural Damages in.pdf:application/pdf},
 }
 ```
 
