@@ -26,14 +26,14 @@ TODO:
 
 It makes sense to run large animations in the background 
 ```bash
-	<path_to_binary>blender -b blend-file.blend -a --background
+<path_to_binary>blender -b blend-file.blend -a --background
 ```
 
 or even outsource to HPC (adjust sbatch settings accordingly)
 
-	```bash
-	sbatch animation_sbatch.sh blend-file.blend
-	```	
+```bash
+sbatch animation_sbatch.sh blend-file.blend
+```	
 
 ### Classic way using stl
 1. Create data files usable in blender
