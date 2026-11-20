@@ -33,7 +33,6 @@ for file in os.listdir(path):
         grid = openvdb.FloatGrid()
         grid.copyFromArray(im.astype(float))
         grid.gridClass = openvdb.GridClass.FOG_VOLUME
-        grid.gridClass = openvdb.GridClass.FOG_VOLUME
         grid.name = 'density'
         openvdb.write(os.path.join(vdbpath,vdbfile), grid)
 
