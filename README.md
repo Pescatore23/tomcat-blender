@@ -23,7 +23,18 @@ TODO:
    7. render:
    8. single frame: "render image" and save result
    9. data recognized automatically by blender as series: define output folder, "render animation" and come back the next day ;)
-		
+
+It makes sense to run large animations in the background
+
+	```bash
+	<path_to_binary>blender -b blend-file.blend -a --background
+	```
+
+or even outsource to HPC (adjust sbatch settings accordingly)
+
+	```bash
+	sbatch animation_sbatch.sh blend-file.blend
+	```	
 
 ### Classic way using stl
 1. Create data files usable in blender
@@ -38,8 +49,14 @@ TODO:
 	Windows
 
 	```bash
-	<path_to_binary>blender.exe blend-file.blend --background --python 05_animscript_using_stl.py
+	<path_to_binary>blender.exe -b blend-file.blend --background --python 05_animscript_using_stl.py
 	```
+
+ 	Linux
+	```bash
+	<path_to_binary>blender -b blend-file.blend --background --python 05_animscript_using_stl.py
+	```
+	
 1. (optional) adjust frame and sampling rate, better option: create separate avi-files, merge and convert to mkv, e.g. combining ImageJ and ffmpeg
 
 ## Video archiving and compression
