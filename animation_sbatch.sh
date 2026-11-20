@@ -6,4 +6,4 @@
 #SBATCH -p gpu-long
 #SBATCH --gres=gpu:2
 
-blenderrun $1 -a --background
+/data/id19/inhouse/robert/blender-5.1.2-linux-x64/blender -b $1 -a --background
