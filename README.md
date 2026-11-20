@@ -24,11 +24,10 @@ TODO:
    8. single frame: "render image" and save result
    9. data recognized automatically by blender as series: define output folder, "render animation" and come back the next day ;)
 
-It makes sense to run large animations in the background
-
-	```bash
+It makes sense to run large animations in the background 
+```bash
 	<path_to_binary>blender -b blend-file.blend -a --background
-	```
+```
 
 or even outsource to HPC (adjust sbatch settings accordingly)
 
@@ -47,7 +46,6 @@ or even outsource to HPC (adjust sbatch settings accordingly)
 1. Run the animation script from command line
 
 	Windows
-
 	```bash
 	<path_to_binary>blender.exe -b blend-file.blend --background --python 05_animscript_using_stl.py
 	```
