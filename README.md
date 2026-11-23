@@ -60,17 +60,20 @@ sbatch animation_sbatch.sh blend-file.blend
 ## Video archiving and compression
 
 Once you have the frames from blender, you can create a video, e.g. by saving a stack in ImageJ to avi. Select none for compression. 
-Convert ImageJ-avi to mkv as recommended by the ETH research collection for long time storage. Typically reduces file size substantially.
-Or directly use ffmpeg if you are familiar with the best use of compression, formats, codecs etc.
+Convert ImageJ-avi to mkv as recommended by the ETH research collection for long time storage. Typically reduces file size substantially while maintaining susceptible quality.
 
 ```
 ffmpeg -i input.avi output.mkv -acodec libfaac -vcodec ffv1
 ```
+Or directly use ffmpeg if you are familiar with the best use of compression, formats, codecs etc. For example, navigate into the blender animation output folder and call adjusting frame rate and file pattern (*.png).
+```
+ffmpeg -framerate 5 -pattern_type glob -i '*.png' -vcodec ffv1 -acodec libfaac ../output.mkv
+```
 
-currently best working method to get videos suitable for ppt-presentations:
+currently (to me) best known working method to convert mkv to compressed avi suitable for ppt-presentations:
 
 ```
-ffmpeg -i input-video.mkv -vf "crop=trunc(iw/2)*2:trunc(ih/2)*2" -q:a 2 -q:v 4 -vcodec wmv2 -acodec wmav2 output-video.avi
+ffmpeg -i output.mkv -vf "crop=trunc(iw/2)*2:trunc(ih/2)*2" -q:a 2 -q:v 4 -vcodec wmv2 -acodec wmav2 output-video.avi
 ```
 
 ## Citation
