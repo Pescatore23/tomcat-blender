@@ -59,7 +59,7 @@ sbatch animation_sbatch.sh blend-file.blend
 
 ## Video archiving and compression
 
-Once you have the frames from blender, you can create a video, e.g. by saving a stack in ImageJ to avi. Select none for compression. 
+Once you have the frames from Blender, you can create a video, e.g. by saving a stack in ImageJ to avi. Select none for compression. 
 Convert ImageJ-avi to mkv as recommended by the ETH research collection for long time storage. Typically reduces file size substantially while maintaining susceptible quality.
 
 ```
@@ -75,6 +75,7 @@ currently (to me) best known working method to convert mkv to compressed avi sui
 ```
 ffmpeg -i output.mkv -vf "crop=trunc(iw/2)*2:trunc(ih/2)*2" -q:a 2 -q:v 4 -vcodec wmv2 -acodec wmav2 output-video.avi
 ```
+You can also create video files directly in Blender, but having the frames as image files often makes post-processing easier and allows to use the images as figures in articles etc.
 
 ## Citation
 
