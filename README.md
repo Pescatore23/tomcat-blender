@@ -12,8 +12,14 @@ TODO:
 
 ### fancy and more performant way
 1. Convert numpy arrays to openvdb files, e.g. 04b_direct_npy_to_vdb.py. Execute the script using the blender python environment (either within blender or CLI) because installing openvdb yourself is a bit of an act. OpenVDB is very useful https://www.youtube.com/watch?v=cqLhhjxch2s.
-2. You can load the vdb files as single frames or animation in blender, filename pattern can be recognized
-3. I am sorry, I only know the very basics of blender:
+	1. 	Trick to get extra modules into the blender python env, but be careful to not break anything:
+		```
+		import subprocess
+		import sys
+		subprocess.check_call([sys.executable, "-m", "pip", "install", "module"])
+        ```
+3. You can load the vdb files as single frames or animation in blender, filename pattern can be recognized
+4. I am sorry, I only know the very basics of blender:
    1. import vdb as volume. If blender crashes, switch to wireframe preview before loading the volume
    2. create or add a material to the volume that contains the volume shader linked to the density node of volume info
    3. place one or several light sources with sufficient power (blender interprets pixels by default as meters and your CT image are then up to several km high ;)
