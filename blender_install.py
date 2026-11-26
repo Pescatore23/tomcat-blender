@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-m', '--module', type = str, default = '', help = "name of the pip module to install")
+parser.add_argument('-m', '--module', type = str, default = '', help = "name of the pip module(s) to install, separate by empty space for multiple modules")
 
 args = parser.parse_args()
 module = args.module
