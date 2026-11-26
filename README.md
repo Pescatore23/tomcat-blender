@@ -18,6 +18,10 @@ TODO:
 		import sys
 		subprocess.check_call([sys.executable, "-m", "pip", "install", "module"])
         ```
+  	2.  or use the python script, for example
+        ```
+        <path_to_blender_python_bin> blender_install.py -m scikit-image scipy
+        ```
 3. You can load the vdb files as single frames or animation in blender, filename pattern can be recognized
 4. I am sorry, I only know the very basics of blender:
    1. import vdb as volume. If blender crashes, switch to wireframe preview before loading the volume
